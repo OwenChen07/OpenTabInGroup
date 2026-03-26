@@ -2,11 +2,20 @@
   "manifest_version": 3,
   "name": "Open Tab in Group",
   "version": "1.0",
-  "description": "Opens a new tab inside the current tab group",
+  "description": "Open a new tab inside the current tab group",
   "permissions": ["tabs", "tabGroups", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"
+  },
+  "commands": {
+    "open-tab-in-same-group": {
+      "suggested_key": {
+        "default": "Alt+T",
+        "mac": "Alt+T"
+      },
+      "description": "Open a new tab inside the current tab group"
+    }
   },
   "background": {
     "service_worker": "background.js"
