@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Open Tab in Group",
+  "version": "1.0",
+  "description": "Opens a new tab inside the current tab group",
+  "permissions": ["tabs", "tabGroups", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
