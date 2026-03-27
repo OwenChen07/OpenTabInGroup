@@ -3,7 +3,11 @@
   "name": "Open Tab in Group",
   "version": "1.0",
   "description": "Open a new tab inside the current tab group",
-  "permissions": ["tabs", "tabGroups", "storage"],
+  "permissions": ["tabs", "tabGroups", "storage", "windows"],
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"

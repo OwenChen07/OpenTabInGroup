@@ -1,4 +1,5 @@
 const openTabButton = document.getElementById('openTab');
+const openTabAgesButton = document.getElementById('openTabAges');
 const editShortcutButton = document.getElementById('editShortcut');
 const toggle = document.getElementById('toggle');
 const status = document.getElementById('status');
@@ -9,9 +10,16 @@ function setStatus(text) {
   }
 }
 
+// Open tab age manager page
+if (openTabAgesButton) {
+  openTabAgesButton.addEventListener('click', () => {
+    window.location.href = 'tab-ages.html';
+  });
+}
+
 // Toggle the automatic group feature
 if (toggle) {
-  chrome.storage.sync.get({ enabled: true }, (result) => {
+  chrome.storage.sync.get({ enabled: false }, (result) => {
     const isEnabled = result.enabled !== false;
     toggle.checked = isEnabled;
     setStatus(isEnabled ? 'Background service is ON' : 'Background service is OFF');

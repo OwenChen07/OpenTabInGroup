@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 360px;
+        max-height: 560px;
+        overflow: hidden;
+        padding: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8f3f0;
+        color: #014baa;
+      }
+
+      .top-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .title {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .ghost-btn {
+        border: 1px solid #014baa;
+        background: transparent;
+        color: #014baa;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .ghost-btn:hover {
+        background: #e8effb;
+      }
+
+      .actions {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .action-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .primary-btn {
+        flex: 1;
+        border: none;
+        border-radius: 10px;
+        background: #014baa;
+        color: #f8f3f0;
+        padding: 9px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .primary-btn:hover {
+        background: #013e8e;
+      }
+
+      .small-select {
+        flex: 1;
+        border: 1px solid #bfd3f4;
+        border-radius: 8px;
+        background: #fff;
+        color: #014baa;
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      .summary {
+        font-size: 11px;
+        color: #014baa;
+        opacity: 0.9;
+        margin-bottom: 8px;
+      }
+
+      .status {
+        min-height: 14px;
+        font-size: 11px;
+        color: #014baa;
+        margin-bottom: 8px;
+      }
+
+      .list {
+        border: 1px solid #d8e4f9;
+        background: #fff;
+        border-radius: 10px;
+        overflow: auto;
+        max-height: 360px;
+      }
+
+      .row {
+        padding: 10px;
+        border-bottom: 1px solid #edf2fc;
+      }
+
+      .row-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .row-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .row:last-child {
+        border-bottom: none;
+      }
+
+      .row-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #014baa;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .row-close {
+        border: 1px solid #bfd3f4;
+        background: #f8f3f0;
+        color: #014baa;
+        border-radius: 7px;
+        padding: 5px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .row-go {
+        border: 1px solid #014baa;
+        background: #014baa;
+        color: #f8f3f0;
+        border-radius: 7px;
+        padding: 5px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .row-go:hover {
+        background: #013e8e;
+      }
+
+      .row-close:hover {
+        background: #e8effb;
+      }
+
+      .row-meta {
+        margin-top: 4px;
+        font-size: 11px;
+        color: #3a66a7;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .group-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        border: 1px solid rgba(1, 75, 170, 0.18);
+        vertical-align: middle;
+      }
+
+      .empty {
+        padding: 16px;
+        text-align: center;
+        font-size: 12px;
+        color: #3a66a7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-row">
+      <div class="title">Tabs By Last Used</div>
+      <div class="top-actions">
+        <button id="refresh" class="ghost-btn" type="button">Refresh</button>
+        <button id="back" class="ghost-btn" type="button">Back</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="action-row">
+        <button id="closeOlderThan" class="primary-btn" type="button">Delete Older Than</button>
+        <select id="olderThan" class="small-select">
+          <option value="1800000">30 minutes</option>
+          <option value="3600000">1 hour</option>
+          <option value="10800000">3 hours</option>
+          <option value="21600000">6 hours</option>
+          <option value="43200000">12 hours</option>
+          <option value="86400000" selected>1 day</option>
+          <option value="259200000">3 days</option>
+          <option value="604800000">7 days</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="summary" class="summary"></div>
+    <div id="status" class="status" aria-live="polite"></div>
+    <div id="list" class="list"></div>
+
+    <script src="tab-ages.js"></script>
+  </body>
+</html>
