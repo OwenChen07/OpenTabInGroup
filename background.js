@@ -301,6 +301,33 @@ async function openTabInSameGroupAsActiveTab() {
   }
 }
 
+async function switchToAdjacentTab(direction) {
+  const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!activeTab || activeTab.id === undefined || !Number.isFinite(activeTab.index)) {
+    return false;
+  }
+
+  const tabs = await chrome.tabs.query({ currentWindow: true });
+  const sortedTabs = tabs
+    .filter((tab) => tab.id !== undefined && Number.isFinite(tab.index))
+    .sort((a, b) => a.index - b.index);
+
+  const activeIndex = sortedTabs.findIndex((tab) => tab.id === activeTab.id);
+  if (activeIndex === -1) {
+    return false;
+  }
+
+  const delta = direction === 'left' ? -1 : 1;
+  const targetIndex = activeIndex + delta;
+  if (targetIndex < 0 || targetIndex >= sortedTabs.length) {
+    return false;
+  }
+
+  const targetTab = sortedTabs[targetIndex];
+  await chrome.tabs.update(targetTab.id, { active: true });
+  return true;
+}
+
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     if (message?.type === 'skip-next-created-tab-grouping') {
@@ -366,13 +393,25 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  if (command !== 'open-tab-in-same-group') {
+  if (command === 'open-tab-in-same-group') {
+    openTabInSameGroupAsActiveTab().catch((error) => {
+      console.error('Failed to open a tab in the same group:', error);
+    });
     return;
   }
 
-  openTabInSameGroupAsActiveTab().catch((error) => {
-    console.error('Failed to open a tab in the same group:', error);
-  });
+  if (command === 'switch-to-left-tab') {
+    switchToAdjacentTab('left').catch((error) => {
+      console.error('Failed to switch to left tab:', error);
+    });
+    return;
+  }
+
+  if (command === 'switch-to-right-tab') {
+    switchToAdjacentTab('right').catch((error) => {
+      console.error('Failed to switch to right tab:', error);
+    });
+  }
 });
 
 function refreshEnabledState() {
@@ -458,6 +497,12 @@ chrome.tabs.onCreated.addListener(async (newTab) => {
     if (groupId !== undefined && groupId !== chrome.tabGroups.TAB_GROUP_ID_NONE) {
       try {
         await chrome.tabs.group({ tabIds: newTab.id, groupId });
+        if (sourceTab?.index !== undefined && Number.isFinite(sourceTab.index)) {
+          await chrome.tabs.move(newTab.id, {
+            windowId: newTab.windowId,
+            index: sourceTab.index + 1
+          });
+        }
         await chrome.tabs.update(newTab.id, { active: true });
       } catch (_) {
         // Ignore transient errors while tab is still initializing.

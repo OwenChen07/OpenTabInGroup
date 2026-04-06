@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Open Tab in Group",
+  "name": "Tabby",
   "version": "1.0",
-  "description": "Open a new tab inside the current tab group",
-  "permissions": ["tabs", "tabGroups", "storage", "windows"],
+  "description": "Tools for managing tabs in Chrome",
+  "permissions": ["tabGroups", "storage"],
   "icons": {
     "48": "icon.png",
     "128": "icon.png"
@@ -19,6 +19,20 @@
         "mac": "Alt+T"
       },
       "description": "Open a new tab inside the current tab group"
+    },
+    "switch-to-left-tab": {
+      "suggested_key": {
+        "default": "Alt+A",
+        "mac": "Alt+A"
+      },
+      "description": "Switch to the tab on the left"
+    },
+    "switch-to-right-tab": {
+      "suggested_key": {
+        "default": "Alt+S",
+        "mac": "Alt+S"
+      },
+      "description": "Switch to the tab on the right"
     }
   },
   "background": {
